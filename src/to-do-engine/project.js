@@ -9,7 +9,7 @@ export default class PROJECT  {
         this.todo_list.push(todo);
     }
 
-    removeToDo (todo) {
-        this.todo_list.splice(todo.id, 1)
+    removeToDo (index) {
+        const removedElement = this.todo_list.splice(index, 1)
     }
 }

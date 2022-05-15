@@ -1,7 +1,5 @@
 export default class TODO {
-    static count = 0
     constructor (title, description, dueDate, priority) {
-        this.id = TODO.count++;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
