@@ -1,3 +1,4 @@
+import styles from  './index.module.scss';
 export default function () {
     function createDiv () {
         return document.createElement('div');
@@ -37,6 +38,7 @@ export default function () {
     const rightSideDivTop = createDiv();
 
     h1.innerText = 'WHAT TO-DO';
+    h1.classList.add(styles.blue);
     headerDiv.appendChild(h1);
 
 
