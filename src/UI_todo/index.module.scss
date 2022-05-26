@@ -1,3 +1,106 @@
-.blue {
-    color: blue;
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
 }
+
+.containerDiv {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    .headerDiv {
+        height: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #BB85F8;
+    }
+
+    .mainDiv {
+        height: 100%;
+        display: flex;
+    }
+
+    .leftSideDiv {
+        width: 30%;
+        background-color: #814BF6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        color: white;
+    }
+
+    .rightSideDiv {
+        border-top: 4px solid #C0C0C0;
+        flex: 1;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .rightSideHeading {
+            margin-bottom: 20px; 
+        }
+    }
+
+    .rightContainer {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+
+        .taskContainer {
+            flex: 1;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            
+            .inputContainer {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                column-gap: 10px;
+                row-gap: 10px;
+
+                .inputBox {
+                    min-width: 350px;
+                    
+                    border: 2px solid #EDEDEE; 
+                    padding: 10px 7px;
+                }
+            }
+
+            .radioContainer {
+                display: flex;
+                width: 50%;
+                justify-content: space-around;
+                font-size: 1.5rem;
+
+
+                .lowRadioDiv, .highRadioDiv {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 20px;
+                    align-items: center;
+                }
+            }
+
+            .newTaskBtn {
+                border: none;
+                border-radius: 10px;
+                color: white;
+                padding: 5px 20px;
+                font-size: 1.2rem;
+                background-color: #BB85F8;
+            }
+        }
+    }
+}
+
