@@ -155,7 +155,8 @@ containerDiv.appendChild(headerDiv);
 containerDiv.appendChild(mainDiv);
 
 
-
 // Append child to body
 body.appendChild(containerDiv);
+
+
 }
