@@ -1,8 +1,9 @@
 import PROJECT from './to-do-engine/project.js';
 import TODO from './to-do-engine/todo.js';
 import UI from './UI_todo/index.js';
+import styles from './UI_todo/index.module.scss';
 
-UI();
+const ALLUI = UI();
 
 const projectLists = [];
 const defaultProject = new PROJECT('Default Project', 'This is the default project');
@@ -30,3 +31,9 @@ function toggleComplete (toDoName) {
     let completed = toDoName.completed;
     (completed === false) ? (toDoName.completed = true) : (toDoName.completed = false);
 }
+
+ALLUI.rightSideDiv.classList.add(styles.hidden);
+
+ALLUI.newProjectBtn.addEventListener('click', () => {
+    ALLUI.rightSideDiv.classList.remove(styles.hidden);
+});

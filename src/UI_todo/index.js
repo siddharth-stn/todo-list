@@ -29,10 +29,6 @@ export default function () {
 
     const body = document.querySelector('body');
     
-    const button = document.createElement('button');
-    
-    
-    
     // Container
     const containerDiv = createDiv();
     containerDiv.classList.add(styles.containerDiv);
@@ -51,11 +47,15 @@ export default function () {
 
         // Left Side Div
         const leftSideDiv = createDiv();
+        const newProjectBtn = document.createElement("button");
+        newProjectBtn.textContent = "Add New Project";
+        newProjectBtn.classList.add(styles.newProjectBtn);
         const leftSideHeading = createH2();
         leftSideHeading.innerText = 'Projects';
         leftSideHeading.classList.add(styles.leftSideHeading);
         leftSideDiv.classList.add(styles.leftSideDiv);
         leftSideDiv.appendChild(leftSideHeading);
+        leftSideDiv.appendChild(newProjectBtn);
 
         // Right Side Div
         const rightSideDiv = createDiv();
@@ -158,5 +158,20 @@ containerDiv.appendChild(mainDiv);
 // Append child to body
 body.appendChild(containerDiv);
 
+return {
+    body,
+    containerDiv,
+    headerDiv,
+    mainDiv,
+    leftSideDiv,
+    leftSideHeading,
+    rightContainer,
+    rightSideDiv,
+    rightSideHeading,
+    taskContainer,
+    form,
+    inputContainer,
+    newProjectBtn,
+}
 
 }
