@@ -28,6 +28,30 @@ export default function () {
 
 
     const body = document.querySelector('body');
+
+
+    // project form 
+    const projFormContainer = createDiv();
+    projFormContainer.classList.add(styles.projFormContainer, styles.hidden);
+    const projForm = document.createElement('form');
+    projForm.classList.add(styles.projForm);
+    const newProjHead = createH2();
+    newProjHead.textContent = "ADD NEW PROJECT";
+    const inputProjName = createInput();
+    inputProjName.placeholder = "Enter Project Name...";
+    const inputProjDesc = createInput();
+    inputProjDesc.placeholder = "Enter Project Description...";
+    const addButton = document.createElement("button");
+    addButton.textContent = "Add"
+    addButton.classList.add(styles.addButton);
+
+    projForm.appendChild(newProjHead);
+    projForm.appendChild(inputProjName);
+    projForm.appendChild(inputProjDesc);
+    projForm.appendChild(addButton);
+
+    projFormContainer.appendChild(projForm);
+    body.appendChild(projFormContainer)
     
     // Container
     const containerDiv = createDiv();
@@ -53,8 +77,11 @@ export default function () {
         const leftSideHeading = createH2();
         leftSideHeading.innerText = 'Projects';
         leftSideHeading.classList.add(styles.leftSideHeading);
+        const projList = createDiv();
+        projList.classList.add(styles.projList);
         leftSideDiv.classList.add(styles.leftSideDiv);
         leftSideDiv.appendChild(leftSideHeading);
+        leftSideDiv.appendChild(projList);
         leftSideDiv.appendChild(newProjectBtn);
 
         // Right Side Div
@@ -62,7 +89,7 @@ export default function () {
         const rightSideHeading = createH2();
         rightSideHeading.innerText = 'Project One Name';
         rightSideHeading.classList.add(styles.rightSideHeading);
-        rightSideDiv.classList.add(styles.rightSideDiv);
+        rightSideDiv.classList.add(styles.rightSideDiv, styles.hidden);
         rightSideDiv.appendChild(rightSideHeading);
 
             // Right container div
@@ -165,6 +192,7 @@ return {
     mainDiv,
     leftSideDiv,
     leftSideHeading,
+    projList,
     rightContainer,
     rightSideDiv,
     rightSideHeading,
@@ -172,6 +200,13 @@ return {
     form,
     inputContainer,
     newProjectBtn,
+    projFormContainer,
+    projForm,
+    addButton,
+    inputProjDesc,
+    inputProjName,
+    createUL,
+    createListItem,   
 }
 
 }

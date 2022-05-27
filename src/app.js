@@ -9,6 +9,23 @@ const projectLists = [];
 const defaultProject = new PROJECT('Default Project', 'This is the default project');
 projectLists.push(defaultProject);
 
+function addProjectsToUI () {
+    ALLUI.projList.textContent = '';
+    projectLists.forEach(element => {
+        const listItem = ALLUI.createListItem();
+        const anchor = document.createElement("A");
+        anchor.href= "#";
+        anchor.textContent = element.name;
+        listItem.appendChild(anchor);
+        listItem.classList.add(styles.listItem);
+
+        const removeProjBTn = document.createElement('div');
+        
+
+        ALLUI.projList.appendChild(listItem);    
+    });
+}
+
 function createProject (name, description) {
     projectLists.push(new PROJECT(name, description));
 }
@@ -32,8 +49,21 @@ function toggleComplete (toDoName) {
     (completed === false) ? (toDoName.completed = true) : (toDoName.completed = false);
 }
 
-ALLUI.rightSideDiv.classList.add(styles.hidden);
-
 ALLUI.newProjectBtn.addEventListener('click', () => {
-    ALLUI.rightSideDiv.classList.remove(styles.hidden);
+    ALLUI.projFormContainer.classList.remove(styles.hidden);
+    //ALLUI.rightSideDiv.classList.remove(styles.hidden);
+});
+
+ALLUI.addButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const name = ALLUI.inputProjName.value;
+    const desc = ALLUI.inputProjDesc.value;
+    
+    console.log(createProject(name, desc));
+    addProjectsToUI();
+    ALLUI.inputProjName.value = "";
+    ALLUI.inputProjDesc.value = "";
+
+
+    ALLUI.projFormContainer.classList.add(styles.hidden);
 });

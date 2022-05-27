@@ -3,6 +3,45 @@
     padding: 0;
 }
 
+.projFormContainer {
+    z-index: 1;
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translateX(-50%);
+    border: 2px solid gray;
+    padding: 15px;
+    border-radius: 5px;
+    
+    .projForm {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        h2 {
+            margin: auto;
+        }
+
+        input {
+            min-width: 350px;
+            border: 2px solid #EDEDEE; 
+            padding: 10px 7px;
+        }
+
+        .addButton {
+            border: none;
+            border-radius: 10px;
+            color: white;
+            padding: 5px 20px;
+            font-size: 1.2rem;
+            background-color: #BB85F8;
+            width: 20%;
+            margin: auto;
+        }
+    }
+}
+
+
 .hidden {
     display: none !important; 
 }
@@ -18,6 +57,7 @@
         justify-content: center;
         align-items: center;
         color: #BB85F8;
+        border-bottom: 3px solid gray;
     }
 
     .mainDiv {
@@ -26,6 +66,7 @@
     }
 
     .leftSideDiv {
+        margin-top: -3px;
         width: 30%;
         background-color: #814BF6;
         display: flex;
@@ -33,6 +74,24 @@
         align-items: center;
         padding-top: 20px;
         color: white;
+
+        .projList {
+            margin-top: 20px;
+            width: 80%;
+
+            a {
+                text-decoration: none;
+                color: white;
+                margin-bottom: 10px;
+            }
+
+            .listItem {
+                list-style-type: none;
+                &:not(:last-child) {
+                    margin-bottom: 10px;
+                }
+            }
+        }
 
         .newProjectBtn {
             margin-top: auto;
