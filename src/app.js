@@ -50,6 +50,8 @@ function toggleComplete (toDoName) {
     (completed === false) ? (toDoName.completed = true) : (toDoName.completed = false);
 }
 
+
+
 ALLUI.newProjectBtn.addEventListener('click', () => {
     ALLUI.projFormContainer.classList.remove(styles.hidden);
     //ALLUI.rightSideDiv.classList.remove(styles.hidden);
@@ -69,8 +71,57 @@ ALLUI.addButton.addEventListener('click', (e) => {
     ALLUI.projFormContainer.classList.add(styles.hidden);
 });
 
+let currentProj;
 ALLUI.leftSideDiv.addEventListener('click', (e) => {
     if (e.target.parentNode.tagName === "LI") {
-        console.log(e.target);
+        let clickedElem = e.target.parentNode;
+        let elemId = Number(clickedElem.id);
+        ALLUI.rightSideHeading.textContent = projectLists[elemId].name;
+        ALLUI.rightSideDiv.classList.remove(styles.hidden);
+
+        stackTodos(elemId);
+        currentProj = elemId;
     }
 });
+
+ALLUI.newTaskBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const taskName = ALLUI.enterTask.value;
+    const taskDesc = ALLUI.enterTaskDescription.value;
+    const taskDueDate = ALLUI.enterDate.value;
+    const highPriority= ALLUI.highRadio.checked;
+    let priority;
+
+    if (highPriority) {
+        priority = 'high';
+    } else {
+        priority = 'low';
+    }
+
+    const todo = new TODO(taskName, taskDesc, taskDueDate, priority);
+    projectLists[currentProj].addToDos(todo);
+
+    stackTodos(currentProj);
+
+});
+
+function stackTodos (projId) {
+    //console.log(projectLists[projId].todo_list.length);
+    const taskContainer = ALLUI.taskContainer;
+    taskContainer.textContent = "";
+    if (projectLists[projId].todo_list.length === 0){
+        taskContainer.textContent = 'Create a Todo';
+        return;
+    }
+    projectLists[projId].todo_list.forEach(element => {
+        console.log(element);
+        const taskDiv = document.createElement('div');
+        taskDiv.classList.add(styles.taskDiv);
+        const taskName = document.createElement('span');
+        taskName.classList.add(styles.taskName);
+        taskName.textContent = element.title
+
+        taskDiv.appendChild(taskName);
+        taskContainer.appendChild(taskDiv);
+    });
+}

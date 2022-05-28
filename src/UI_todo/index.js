@@ -89,7 +89,7 @@ export default function () {
         const rightSideHeading = createH2();
         rightSideHeading.innerText = 'Project One Name';
         rightSideHeading.classList.add(styles.rightSideHeading);
-        rightSideDiv.classList.add(styles.rightSideDiv, styles.hidden);
+        rightSideDiv.classList.add(styles.rightSideDiv);
         rightSideDiv.appendChild(rightSideHeading);
 
             // Right container div
@@ -199,6 +199,12 @@ return {
     taskContainer,
     form,
     inputContainer,
+    enterTask,
+    enterDate,
+    enterTaskDescription,
+    highRadio,
+    lowRadio,
+    newTaskBtn,
     newProjectBtn,
     projFormContainer,
     projForm,
