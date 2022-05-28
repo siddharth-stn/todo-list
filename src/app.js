@@ -8,11 +8,13 @@ const ALLUI = UI();
 const projectLists = [];
 const defaultProject = new PROJECT('Default Project', 'This is the default project');
 projectLists.push(defaultProject);
+addProjectsToUI();
 
 function addProjectsToUI () {
     ALLUI.projList.textContent = '';
-    projectLists.forEach(element => {
+    projectLists.forEach((element, index) => {
         const listItem = ALLUI.createListItem();
+        listItem.id = index;
         const anchor = document.createElement("A");
         anchor.href= "#";
         anchor.textContent = element.name;
@@ -21,7 +23,6 @@ function addProjectsToUI () {
 
         const removeProjBTn = document.createElement('div');
         
-
         ALLUI.projList.appendChild(listItem);    
     });
 }
@@ -66,4 +67,10 @@ ALLUI.addButton.addEventListener('click', (e) => {
 
 
     ALLUI.projFormContainer.classList.add(styles.hidden);
+});
+
+ALLUI.leftSideDiv.addEventListener('click', (e) => {
+    if (e.target.parentNode.tagName === "LI") {
+        console.log(e.target);
+    }
 });
