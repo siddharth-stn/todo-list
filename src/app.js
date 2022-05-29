@@ -2,53 +2,59 @@ import PROJECT from './to-do-engine/project.js';
 import TODO from './to-do-engine/todo.js';
 import UI from './UI_todo/index.js';
 import styles from './UI_todo/index.module.scss';
+import { compareAsc, format } from 'date-fns';
 
 const ALLUI = UI();
+let currentProj;
 
 const projectLists = [];
 const defaultProject = new PROJECT('Default Project', 'This is the default project');
 projectLists.push(defaultProject);
-addProjectsToUI();
+let today = format(new Date(), 'dd-MM-yyyy');
+let defaultTodo = new TODO("Default to-do", "this is the default todo", today, "low");
+projectLists[0].addToDos(defaultTodo);
 
-function addProjectsToUI () {
+
+
+function createProject(name, description) {
+    projectLists.push(new PROJECT(name, description));
+}
+
+function addProjectsToUI() {
     ALLUI.projList.textContent = '';
     projectLists.forEach((element, index) => {
         const listItem = ALLUI.createListItem();
         listItem.id = index;
         const anchor = document.createElement("A");
-        anchor.href= "#";
+        anchor.href = "#";
         anchor.textContent = element.name;
         listItem.appendChild(anchor);
         listItem.classList.add(styles.listItem);
 
-        const removeProjBTn = document.createElement('div');
-        
-        ALLUI.projList.appendChild(listItem);    
+        const removeProjBtn = document.createElement('div');
+        removeProjBtn.classList.add(styles.removeProjBtn);
+        listItem.appendChild(removeProjBtn);
+        ALLUI.projList.appendChild(listItem);
+
+        removeProjBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteProj(index);
+        }, true);
+
     });
 }
 
-function createProject (name, description) {
-    projectLists.push(new PROJECT(name, description));
+addProjectsToUI();
+
+
+function deleteProj (index) {
+    projectLists.splice(index, 1)
+    if (!(projectLists[index].todo_list)) {
+        ALLUI.rightSideDiv.classList.add(styles.hidden);
+    }
+    addProjectsToUI();
 }
 
-function createTodo(title, description, dueDate, priority) {
-    return (new TODO(title, description, dueDate, priority));
-}
-
-function addTodoToProject (projectIndex, toDo) {
-    let element = projectLists[projectIndex];
-    element.addToDos(toDo);
-}
-
-function removeTodoFromProject (projectIndex, toDoIndex) {
-    let projectElement = projectLists[projectIndex];
-    projectElement.removeToDo(toDoIndex);
-}
-
-function toggleComplete (toDoName) {
-    let completed = toDoName.completed;
-    (completed === false) ? (toDoName.completed = true) : (toDoName.completed = false);
-}
 
 
 
@@ -61,7 +67,7 @@ ALLUI.addButton.addEventListener('click', (e) => {
     e.preventDefault();
     const name = ALLUI.inputProjName.value;
     const desc = ALLUI.inputProjDesc.value;
-    
+
     console.log(createProject(name, desc));
     addProjectsToUI();
     ALLUI.inputProjName.value = "";
@@ -71,7 +77,7 @@ ALLUI.addButton.addEventListener('click', (e) => {
     ALLUI.projFormContainer.classList.add(styles.hidden);
 });
 
-let currentProj;
+
 ALLUI.leftSideDiv.addEventListener('click', (e) => {
     if (e.target.parentNode.tagName === "LI") {
         let clickedElem = e.target.parentNode;
@@ -81,6 +87,8 @@ ALLUI.leftSideDiv.addEventListener('click', (e) => {
 
         stackTodos(elemId);
         currentProj = elemId;
+
+        ALLUI.rightSideDiv.classList.remove(styles.hidden);
     }
 });
 
@@ -88,8 +96,8 @@ ALLUI.newTaskBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const taskName = ALLUI.enterTask.value;
     const taskDesc = ALLUI.enterTaskDescription.value;
-    const taskDueDate = ALLUI.enterDate.value;
-    const highPriority= ALLUI.highRadio.checked;
+    const taskDueDate = format(new Date(ALLUI.enterDate.value), 'dd-MM-yyyy');
+    const highPriority = ALLUI.highRadio.checked;
     let priority;
 
     if (highPriority) {
@@ -102,26 +110,69 @@ ALLUI.newTaskBtn.addEventListener('click', (e) => {
     projectLists[currentProj].addToDos(todo);
 
     stackTodos(currentProj);
-
 });
 
-function stackTodos (projId) {
-    //console.log(projectLists[projId].todo_list.length);
+function stackTodos(projId) {
     const taskContainer = ALLUI.taskContainer;
     taskContainer.textContent = "";
-    if (projectLists[projId].todo_list.length === 0){
-        taskContainer.textContent = 'Create a Todo';
-        return;
-    }
-    projectLists[projId].todo_list.forEach(element => {
-        console.log(element);
+    projectLists[projId].todo_list.forEach((element, index) => {
         const taskDiv = document.createElement('div');
+        if (element.completed == false) {
+            taskDiv.classList.add(styles.incompleteTask); 
+        } else {
+            taskDiv.classList.add(styles.completeTask);
+        }
         taskDiv.classList.add(styles.taskDiv);
         const taskName = document.createElement('span');
         taskName.classList.add(styles.taskName);
-        taskName.textContent = element.title
+        taskName.textContent = `${index+1}. ${element.title}`;
+
+        const priorityDiv = document.createElement('div');
+        priorityDiv.style.backgroundColor = "white";
+        priorityDiv.style.marginLeft = "50px";
+        if (element.priority === 1) {
+            priorityDiv.textContent = "High Priority";
+            priorityDiv.style.color = "red";
+        } else {
+            priorityDiv.textContent = "Low Priority";
+            priorityDiv.style.color = "#FFD700";
+        }
+
+        const showDateDiv = document.createElement('div');
+        showDateDiv.classList.add(styles.showDateDiv);
+        showDateDiv.textContent = element.dueDate;
+
+        const markCompleteDiv = document.createElement('div');
+        markCompleteDiv.classList.add(styles.markCompleteDiv);
+
+        const deleteTaskDiv = document.createElement('div');
+        deleteTaskDiv.classList.add(styles.deleteTaskDiv);
 
         taskDiv.appendChild(taskName);
+        taskDiv.appendChild(priorityDiv);
+        taskDiv.appendChild(showDateDiv);
+        taskDiv.appendChild(markCompleteDiv);
+        taskDiv.appendChild(deleteTaskDiv);
+
         taskContainer.appendChild(taskDiv);
+
+        markCompleteDiv.addEventListener('click', () => {
+            markTaskComplete(element, taskDiv), true
+        });
+
+        deleteTaskDiv.addEventListener('click', () => {
+            deleteTask(index, projId);
+        }, true);
     });
+}
+
+function markTaskComplete(element, taskDiv) {
+    element.completed = true;
+    taskDiv.classList.remove(styles.incompleteTask);
+    taskDiv.classList.add(styles.completeTask);
+}
+
+function deleteTask(index, projId) {
+    projectLists[currentProj].todo_list.splice(index, 1);
+    stackTodos(projId);
 }

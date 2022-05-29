@@ -89,7 +89,7 @@ export default function () {
         const rightSideHeading = createH2();
         rightSideHeading.innerText = 'Project One Name';
         rightSideHeading.classList.add(styles.rightSideHeading);
-        rightSideDiv.classList.add(styles.rightSideDiv);
+        rightSideDiv.classList.add(styles.rightSideDiv, styles.hidden);
         rightSideDiv.appendChild(rightSideHeading);
 
             // Right container div
@@ -110,6 +110,7 @@ export default function () {
                     enterTask.placeholder = "write your new task here...";
                     enterTask.classList.add(styles.inputBox);
                     const enterDate = createInput();
+                    enterDate.type = "date";
                     enterDate.placeholder = "enter due date...";
                     enterDate.classList.add(styles.inputBox);
                     const enterTaskDescription = createInput();
