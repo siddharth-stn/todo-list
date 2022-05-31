@@ -1,5 +1,5 @@
 export default class TODO {
-    constructor (title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -16,19 +16,19 @@ export default class TODO {
             case "HIGH":
                 this._priority = 1;
                 break;
-             case "LOW":
-                 this._priority = 0;
-                  break;
+            case "LOW":
+                this._priority = 0;
+                break;
             default:
                 break;
         }
     }
 
-    get completed () {
+    get completed() {
         return this._completed
     }
 
-    set completed (value) {
+    set completed(value) {
         this._completed = value;
     }
 };

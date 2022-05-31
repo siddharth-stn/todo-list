@@ -6,10 +6,18 @@ import { compareAsc, format } from 'date-fns';
 
 const ALLUI = UI();
 let currentProj;
-
+let localProjList = JSON.parse(localStorage.getItem("projList"));
 const projectLists = [];
+let sampleProj = new PROJECT();
+projectLists.push(...localProjList);
+
+
+//! Start working here by making a for each loop
+
+
+Object.setPrototypeOf(projectLists[1], sampleProj.constructor.prototype);
 const defaultProject = new PROJECT('Default Project', 'This is the default project');
-projectLists.push(defaultProject);
+projectLists[0] = defaultProject;
 let today = format(new Date(), 'dd-MM-yyyy');
 let defaultTodo = new TODO("Default to-do", "this is the default todo", today, "low");
 projectLists[0].addToDos(defaultTodo);
@@ -18,10 +26,11 @@ projectLists[0].addToDos(defaultTodo);
 
 function createProject(name, description) {
     projectLists.push(new PROJECT(name, description));
+    localStorage.setItem("projList", JSON.stringify(projectLists));
 }
 
 function addProjectsToUI() {
-    ALLUI.projList.textContent = '';
+    ALLUI.projList.textContent = "";
     projectLists.forEach((element, index) => {
         const listItem = ALLUI.createListItem();
         listItem.id = index;
@@ -68,7 +77,7 @@ ALLUI.addButton.addEventListener('click', (e) => {
     e.preventDefault();
     const name = ALLUI.inputProjName.value;
     const desc = ALLUI.inputProjDesc.value;
-    
+
     createProject(name, desc);
     addProjectsToUI();
     ALLUI.inputProjName.value = "";
