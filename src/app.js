@@ -48,8 +48,9 @@ addProjectsToUI();
 
 
 function deleteProj (index) {
-    projectLists.splice(index, 1)
-    if (!(projectLists[index].todo_list)) {
+    const projName = projectLists[index].name;
+    projectLists.splice(index, 1);
+    if (projName == ALLUI.rightSideHeading.textContent) {
         ALLUI.rightSideDiv.classList.add(styles.hidden);
     }
     addProjectsToUI();
@@ -67,8 +68,8 @@ ALLUI.addButton.addEventListener('click', (e) => {
     e.preventDefault();
     const name = ALLUI.inputProjName.value;
     const desc = ALLUI.inputProjDesc.value;
-
-    console.log(createProject(name, desc));
+    
+    createProject(name, desc);
     addProjectsToUI();
     ALLUI.inputProjName.value = "";
     ALLUI.inputProjDesc.value = "";
@@ -88,7 +89,7 @@ ALLUI.leftSideDiv.addEventListener('click', (e) => {
         stackTodos(elemId);
         currentProj = elemId;
 
-        ALLUI.rightSideDiv.classList.remove(styles.hidden);
+        //ALLUI.rightSideDiv.classList.remove(styles.hidden);
     }
 });
 
