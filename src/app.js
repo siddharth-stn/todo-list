@@ -6,27 +6,36 @@ import { compareAsc, format } from 'date-fns';
 
 const ALLUI = UI();
 let currentProj;
-let localProjList = JSON.parse(localStorage.getItem("projList"));
 const projectLists = [];
 let sampleProj = new PROJECT();
-projectLists.push(...localProjList);
+let localProjList;
+function getProjListFromLocalStorage () {
+    localProjList = JSON.parse(localStorage.getItem("projList"));
+}
+
+getProjListFromLocalStorage();
+if ( localProjList ) {
+    projectLists.push(...localProjList);
+    projectLists.forEach(element => {
+        Object.setPrototypeOf(element, sampleProj.constructor.prototype);
+    });
+}
 
 
-//! Start working here by making a for each loop
-
-
-Object.setPrototypeOf(projectLists[1], sampleProj.constructor.prototype);
 const defaultProject = new PROJECT('Default Project', 'This is the default project');
 projectLists[0] = defaultProject;
 let today = format(new Date(), 'dd-MM-yyyy');
 let defaultTodo = new TODO("Default to-do", "this is the default todo", today, "low");
 projectLists[0].addToDos(defaultTodo);
 
+function setLocalStorage () {
+    localStorage.setItem("projList", JSON.stringify(projectLists));
+}
 
 
 function createProject(name, description) {
     projectLists.push(new PROJECT(name, description));
-    localStorage.setItem("projList", JSON.stringify(projectLists));
+    setLocalStorage();
 }
 
 function addProjectsToUI() {
@@ -51,7 +60,9 @@ function addProjectsToUI() {
         }, true);
 
     });
+    setLocalStorage();
 }
+
 
 addProjectsToUI();
 
@@ -97,7 +108,7 @@ ALLUI.leftSideDiv.addEventListener('click', (e) => {
 
         stackTodos(elemId);
         currentProj = elemId;
-
+        console.log(projectLists[currentProj].todo_list);
         //ALLUI.rightSideDiv.classList.remove(styles.hidden);
     }
 });
@@ -120,6 +131,7 @@ ALLUI.newTaskBtn.addEventListener('click', (e) => {
     projectLists[currentProj].addToDos(todo);
 
     stackTodos(currentProj);
+    setLocalStorage();
 });
 
 function stackTodos(projId) {
@@ -127,7 +139,7 @@ function stackTodos(projId) {
     taskContainer.textContent = "";
     projectLists[projId].todo_list.forEach((element, index) => {
         const taskDiv = document.createElement('div');
-        if (element.completed == false) {
+        if (element.completed == false || element._completed == false) {
             taskDiv.classList.add(styles.incompleteTask); 
         } else {
             taskDiv.classList.add(styles.completeTask);
@@ -177,12 +189,14 @@ function stackTodos(projId) {
 }
 
 function markTaskComplete(element, taskDiv) {
-    element.completed = true;
+    element._completed = true;
     taskDiv.classList.remove(styles.incompleteTask);
     taskDiv.classList.add(styles.completeTask);
+    setLocalStorage();
 }
 
 function deleteTask(index, projId) {
     projectLists[currentProj].todo_list.splice(index, 1);
     stackTodos(projId);
+    setLocalStorage();
 }
